@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<body>
+<div id="countdown"></div>
+<div id="notifier"></div>
+<script type="text/javascript">
+function startTimer() {
+  //userInput = document.getElementById('userTime').value;
+    d = parseInt(document.getElementById("days").value, 0);
+    h = parseInt(document.getElementById("hours").value, 0);
+    m = parseInt(document.getElementById("minutes").value, 0);
+    s = parseInt(document.getElementById("seconds").value, 0);
+    userInput = ((d * 86400) + (h * 3600) + (m * 60) + s);  //the current time left in seconds
+    
+/*   	if(userInput.length == 0){
+		alert("Please enter a value");
+	} else {
+	var numericExpression = /^[0-9]+$/;
+	if(!userInput.match(numericExpression)){
+	alert("Please enter a number")
+	} else { */
+
+   function display( notifier, str ) {
+    document.getElementById(notifier).innerHTML = str;
+  }
+        
+  function toMinuteAndSecond( x ) {
+    day = x / (24 * 3600); 
+      
+      x = x % (24 * 3600); 
+      hour = x / 3600; 
+    
+      x %= 3600; 
+      minutes = x / 60 ; 
+    
+      x %= 60; 
+      seconds = x; 
+    return  Math.floor(day) + " " + "days " + Math.floor(hour)  
+                           + " " + "hours " + Math.floor(minutes) + " "
+                           + "minutes " + seconds + " "
+                           + "seconds ";
+  }
+        
+  function setTimer( remain, actions ) {
+    (function countdown() {
+       display("countdown", toMinuteAndSecond(remain));         
+       actions[remain] && actions[remain]();
+       (remain -= 1) >= 0 && setTimeout(arguments.callee, 1000);
+    })();
+  }
+
+  setTimer(userInput, {
+    1800: function () { display("notifier", '<h1 style="color:blue;">'+"Less than 30 minutues until your farm is ready to be harvested!"+'</h1>'); var audio = new Audio('AlarmSound.mp3');audio.play(); },
+     600: function () { display("notifier", '<h1 style="color:red;">'+"Less than 10 minutues until your farm is ready to be harvested!"+'</h1>'); var audio = new Audio('AlarmSound.mp3');audio.play();       },
+     0: function () { display("notifier", '<h1 style="color:green;">'+"Your farm is now ready to be harvested!"+'</h1>'); var audio = new Audio('AlarmSound.mp3');audio.play();     }
+  }); 
+}  
+/* } */
+/* } */
+</script>
+<!--Please Enter A Number: <input type="text" id="userTime" />-->
+D:<input type="text" id="days" value="0" /> 
+H:<input type="text" id="hours" value="0" /> 
+M:<input type="text" id="minutes" value="0" />
+S:<input type="text" id="seconds" value="0" /><br>
+<input type="button" value="Go" onclick="startTimer()" />
+</body>
+</html>
